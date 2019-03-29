@@ -15,10 +15,7 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.InMemoryTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 import javax.sql.DataSource;
 import java.util.concurrent.TimeUnit;
@@ -74,22 +71,14 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
         endpoints.authenticationManager(authenticationManager);
         endpoints.tokenStore(tokenStore());
         endpoints.userDetailsService(userService);
-        endpoints.setClientDetailsService(clientDetails);
-        DefaultTokenServices tokenServices = getDefaultTokenService(endpoints);
-        endpoints.tokenServices(tokenServices);
-    }
-
-    private DefaultTokenServices getDefaultTokenService(AuthorizationServerEndpointsConfigurer endpoints) {
-        //配置TokenServices参数
+//         配置TokenServices参数
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(endpoints.getTokenStore());
-        //开启刷新token
         tokenServices.setSupportRefreshToken(true);
         tokenServices.setClientDetailsService(endpoints.getClientDetailsService());
         tokenServices.setTokenEnhancer(endpoints.getTokenEnhancer());
-        // 1天
-        tokenServices.setAccessTokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(1));
-        return tokenServices;
+        tokenServices.setAccessTokenValiditySeconds( (int) TimeUnit.DAYS.toSeconds(1));
+        endpoints.tokenServices(tokenServices);
     }
 
     @Bean

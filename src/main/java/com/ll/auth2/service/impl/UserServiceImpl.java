@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
         System.out.println("===================获取到token已进入自定义验证："+ s );
         User user = new User();
         user.setUsername("1111");
-        user.setPassword("22223");
+        user.setPassword("2222");
         return new CustomUserDetails(user);
     }
 }
