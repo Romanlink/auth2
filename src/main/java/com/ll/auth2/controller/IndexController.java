@@ -10,9 +10,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class IndexController {
 
+
     @GetMapping("/sayHello")
     private String sayHello(){
         System.out.println("Hello World");
+        return "Hello World";
+    }
+
+    @GetMapping("/user")
+    private String user(){
+        System.out.println("this is get user method !");
+
         return "Hello World";
     }
 
